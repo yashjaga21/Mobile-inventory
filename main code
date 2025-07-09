@@ -1,0 +1,168 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Mobile {
+private:
+int mobileID;
+string modelName;
+string brand;
+int quantity;
+float price;
+
+public:
+Mobile() {
+mobileID = 0;
+modelName = "";
+brand = "";
+quantity = 0;
+price = 0.0;
+}
+
+void addMobile() {  
+    cout << "Enter Mobile ID-> ";  
+    cin >> mobileID;  
+    cout << "Enter Brand-> ";  
+    cin.ignore();  
+    getline(cin, brand);  
+    cout << "Enter Model Name -> ";  
+    getline(cin, modelName);  
+    cout << "Enter Quantity-> ";  
+    cin >> quantity;  
+    cout << "Enter Price (per piece) -> ";  
+    cin >> price;  
+}  
+
+void displayMobile() const {  
+    cout << "ID: " << mobileID  
+         << " | Brand: " << brand  
+         << " | Model: " << modelName  
+         << " | Qty: " << quantity  
+         << " | Price: ₹" << price << endl;  
+}  
+
+int getID() const {  
+    return mobileID;  
+}  
+
+void updateQuantity(int newq) {  
+    quantity = newq;  
+}  
+
+string getModelName()  {  
+    return modelName;  
+}  
+
+string getBrand()  {  
+    return brand;  
+}  
+
+float getPrice()  {  
+    return price;  
+}
+
+};
+
+// Global list to store mobiles
+vector<Mobile> mobileInventory;
+
+void addMobileToInventory() {
+Mobile m;
+m.addMobile();
+mobileInventory.push_back(m);
+cout << " Mobile added successfully!"<<endl;
+}
+
+void displayInventory() {
+if (mobileInventory.empty()) {
+cout << " Inventory is empty!" <<endl;
+return;
+}
+
+cout << " Mobiles in Inventory:" <<endl;  
+for ( const Mobile& m : mobileInventory) {  
+    m.displayMobile();  
+}
+
+}
+ 
+void searchMobile() {
+int searchID;
+cout << "Enter Mobile ID to search: ";
+cin >> searchID;
+
+for ( const Mobile& m : mobileInventory) {  
+    if (m.getID() == searchID) {  
+        cout << " Mobile found:" <<endl;  
+        m.displayMobile();  
+        return;  
+    }  
+}  
+cout << " Mobile not found!" <<endl;
+
+}
+
+void deleteMobile() {
+int deleteID;
+cout << "Enter Mobile ID to delete: ";
+cin >> deleteID; 
+
+for ( auto it = mobileInventory.begin(); it != mobileInventory.end(); ++it) {  
+    
+    if (it->getID() == deleteID) {  
+        mobileInventory.erase(it);  
+        cout << " Mobile deleted successfully!!" <<endl;  
+        return;  
+    }  
+}  
+cout << " Mobile not found!!" <<endl; 
+
+}
+
+void updateMobileQuantity() {
+int updateID, newq;
+cout << "Enter Mobile ID to update quantity: ";
+cin >> updateID;
+
+for ( Mobile &m : mobileInventory) {  
+    if (m.getID() == updateID) {  
+        cout << "Enter new quantity: ";  
+        cin >> newq;  
+        m.updateQuantity(newq);  
+        cout << " Quantity updated successfully!" <<endl;  
+        return;  
+    }  
+}  
+cout << " Mobile not found!" <<endl;
+
+}
+
+int main() {
+int c;
+
+do {  
+    cout << endl << " Mobile Shop Inventory Menu:" <<endl;  
+    cout << "1. Add Mobile" <<endl;  
+    cout << "2. Display Inventory" <<endl;  
+    cout << "3. Search Mobile" <<endl;  
+    cout << "4. Delete Mobile" <<endl;  
+    cout << "5. Update Mobile Quantity" <<endl;  
+    cout << "6. Exit" <<endl;  
+    cout << "Enter your choice: ";  
+    cin >> c;  
+
+    switch (c) {  
+        case 1: addMobileToInventory(); break;  
+        case 2: displayInventory(); break;  
+        case 3: searchMobile(); break;  
+        case 4: deleteMobile(); break;  
+        case 5: updateMobileQuantity(); break;  
+        case 6: cout << " Exiting... Bye!" <<endl; break;  
+        default: cout << " Invalid choice! Try again." <<endl;  
+    }  
+} while (c != 6);  
+
+return 0;
+
+}
